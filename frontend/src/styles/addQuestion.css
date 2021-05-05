@@ -1,0 +1,66 @@
+/* .question-background{
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 77%;
+    width: 50%;
+    margin: auto;
+    align-content: center;
+    border-radius: 1%;
+    background: #111111;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 20px 0 rgba(0, 0, 0, 0.8);
+    opacity: 0.8;
+  }
+
+.label-question{
+    display: block;
+    margin-top: 10px;
+    font: 300 30px Source Sans Pro;
+    color: darkgrey;
+    text-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 5px 10px 0 rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+
+.button-add{
+    position: relative;
+    height: 40px;
+    width: 40%;
+    border: none;
+    border-radius: 30px;
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, orangered 0%, orange 25%, yellow 50%, darkorange 75%);
+    transition: 0.3s;
+    font: 300 25px Source Sans Pro;
+    color: black;
+    padding: 5px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 20px 0 rgba(0, 0, 0, 0.8);
+    opacity: 1;
+    margin: 10% auto 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button-file{
+  display: block;
+  margin-left: auto;
+  margin-right: auto 
+}
+.question-input {
+  display: block;
+  position: relative;
+  height: 33px;
+  width: 70%;
+  border: 2px solid darkgray;
+  background-color: transparent;
+  font: 300 25px Source Sans Pro;
+  color: orange;
+  padding: 0 20px;
+  margin: 7px auto auto;
+  opacity: 1;
+  outline: none;
+  text-align: center;
+  border-radius: 12px;
+
+} */

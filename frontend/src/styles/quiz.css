@@ -1,0 +1,15 @@
+.quizz-background{
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 77%;
+    width: 50%;
+    margin: auto;
+    align-content: center;
+    border-radius: 1%;
+    background: #111111;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 20px 0 rgba(0, 0, 0, 0.8);
+    opacity: 0.8;
+  }
