@@ -1,112 +1,163 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
-import {Form, Button} from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service"
 
 import '../styles/addQuestion.css';
 
 const BoardAdmin = () => {
-    const [content, setContent] = useState("");
-    const form = useRef();
-    const checkBtn = useRef();
-    const [question, setQuestion] = useState("");
-    const [answear1, setAnswear1] = useState("");
-    const [answear2, setAnswear2] = useState("");
-    const [image, setImage] = useState("");
-    
-    const data = AuthService.getData();
 
-    const onChangeQuestion = (e) => {
-      setQuestion(e.target.value);
-    };
+  const [formState, setFormState] = useState({
+    question: '',
+    answears: [
+      {
+        isCorrect: false,
+        answear: ''
+      }
+    ],
+    photo: null
+  })
+  const [data, setData] = useState()
 
-    const onChangeAnswear1 = (e) => {
-      setAnswear1(e.target.value);
-    };
 
-    const onChangeAnswear2 = (e) => {
-      setAnswear2(e.target.value);
-    };
 
-    const onChangeImage = (e) => {
-      setImage(e.target.value);
-    };
+  const onChangeQuestion = (e) => {
+    const { value } = e.target;
+    setFormState({
+      ...formState,
+      question: value
+    })
+  };
 
-    useEffect(() => {
-      UserService.getAdminBoard().then(
-        (response) => {
-          setContent(response.data);
-        },
-        (error) => {
-          const _content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-  
-          setContent(_content);
+  const onChangeAnswers = (type, index) => (e) => {
+    const { value, checked } = e.target;
+
+    const { answears } = formState;
+    answears[index][type] = type === "isCorrect" ? checked : value
+    setFormState({
+      ...formState,
+      answears
+    })
+  };
+
+  const addNewAnswearField = (e) => {
+    e.preventDefault()
+    setFormState({
+      ...formState,
+      answears: [
+        ...formState.answears,
+        {
+          isCorrect: false,
+          answear: ''
         }
-      );
-    }, []);
+      ]
+    })
+  }
+
+  const onChangeImage = (e) => {
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
+    const file = e.target.files[0]
     
-    const handleSubmit = (e) => {
-      e.preventDefault();
-        AuthService.submit(question, answear1, answear2, image)
-    }
+    toBase64(file).then(fileData => {
+      
+      console.log(fileData)
+      setFormState({
+        ...formState,
+        photo: fileData
+      })
+    })
 
-    return (
-      <div className="question-background">
 
-        <Form onSubmit={handleSubmit} ref={form}>
+
+
+  };
+
+  useEffect(() => {
+    AuthService.getData().then(data => {
+      setData(data)
+      console.log(data)
+    })
+
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    AuthService.submit(formState)
+  }
+
+  return (
+    <div className="question-background">
+
+      <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicQuestion">
           <Form.Label className="label-question">Treść pytania</Form.Label>
-          <Form.Control type="text" 
-             placeholder="Pytanie" 
-             onChange={onChangeQuestion} />
+          <Form.Control type="text"
+            placeholder="Pytanie"
+            onChange={onChangeQuestion} />
           <Form.Text className="text-muted" >
-            Podaj tresc pytania egzaminacyjnego. 
+            Podaj tresc pytania egzaminacyjnego.
           </Form.Text>
         </Form.Group>
-
-        <Form.Group controlId="formBasicAnswer">
-            <Form.Label className="label-question">Poprawna Odpowiedź na pytanie</Form.Label>
-            <Form.Control type="text" 
-              placeholder="Odpowiedź poprawna" 
-              onChange={onChangeAnswear1}/>
-            <Form.Text className="text-muted" >
-                Podaj poprawna odpowiedź na pytanie.
+        {formState.answears.map((answear, index) => (
+          <Form.Group controlId="formBasicAnswer">
+            <div>
+              <Form.Label className="label-question">Odpowiedź na pytanie</Form.Label>
+              <Form.Control type="text"
+                placeholder="Odpowiedź"
+                onChange={onChangeAnswers('answear', index)} />
+              <Form.Text className="text-muted" >
+                Podaj odpowiedź na pytanie.
             </Form.Text>
+            </div>
+            <div>
+              <Form.Label className="label-question">Czy poprawne</Form.Label>
+              <Form.Control type="checkbox"
+                onChange={onChangeAnswers('isCorrect', index)} />
+              <Form.Text className="text-muted" >
+                Podaj odpowiedź na pytanie.
+            </Form.Text>
+            </div>
+
+          </Form.Group>
+        ))}
+
+        <button onClick={addNewAnswearField}>Dodaj kolejna odpowiedz</button>
+        <Form.Group>
+          <Form.File id="exampleFormControlFile1"
+            onChange={onChangeImage}
+            label="Dodaj zdjęcie" />
         </Form.Group>
 
-        <Form.Group controlId="formBasicAnswer">
-            <Form.Label className="label-question">Niepoprawna odpowiedź na pytanie.</Form.Label>
-            <Form.Control type="text" 
-                placeholder="Odpowiedź niepoprawna" 
-                onChange={onChangeAnswear2}/>
-            <Form.Text className="text-muted">
-                Podaj niepoprawną odpowiedź.
-            </Form.Text>
-        </Form.Group>
 
-        <Form className="button-file">
-            <Form.Group>
-            <Form.File id="exampleFormControlFile1" 
-               onChange={onChangeImage} 
-               label="Dodaj zdjęcie" />
-            </Form.Group>
-        </Form>
         <button>
           Dodaj
         </button>
         <div>Data:
-       {data}
-      
+        {data && data.map(question => {
+          let data = '';
+          if (question.img.data) {
+            data = Buffer.from(question.img.data.data).toString()
+          }
+
+          return  (<div>
+            <p>{question.question}</p>
+            <img src={data} />
+          </div>)
+
+        })}
         </div>
-        </Form>
-      </div>
-    );
-  };
-  
-  export default BoardAdmin;
+      </Form>
+
+    </div>
+  );
+};
+
+export default BoardAdmin;

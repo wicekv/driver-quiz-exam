@@ -63,9 +63,7 @@ exports.signup = (req, res) => {
     }
   });
 };
-exports.getData = (req,res) => {
-  console.log("req");
-}
+
 exports.signin = (req, res) => {
   User.findOne({
     username: req.body.username
@@ -112,45 +110,60 @@ exports.signin = (req, res) => {
     });
 };
 
-exports.submit = (req,res) =>{
-console.log(req.body);
-const question = new Question({
-  question: req.body.question,
-  answear1: req.body.answear1,
-  answear2: req.body.answear2,
-  img: {
-    data: req.body.img,
-    contentType: 'image/png'
-  }
-});
-question.save((err, question) => {
-  if (err) {
-    res.status(500).send({ message: err });
-    return ;
+exports.submit = (req, res) => {
+  const { question: {
+    photo, ...rest
+  } } = req.body;
+  const question = new Question({
+    ...rest,
+    img: {
+      data: photo,
+      contentType: 'image/png'
     }
-  res.redirect('/admin');
   });
-  
-// var obj = {
-//   question: req.body.question,
-//   answear1: req.body.answear1,
-//   answear2: req.body.answear2,
-//   img: {
-//     //data: fs.readFileSync(path.join(__dirname + '/uploads' + req.file.filename)),
-//    data: req.body.img,
-//     contentType: 'image/png'
-//   }
-// }
-// db.create(obj, (err,item) => {
-//   if(err) {
-//     console.log(err);
-//   }
-//   else {
-//     res.redirect('/admin');
-//   }
-// })
- }
+  question.save((err, question) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    res.redirect('/admin');
+  });
 
 
+  // var obj = {
+  //   question: req.body.question,
+  //   answear1: req.body.answear1,
+  //   answear2: req.body.answear2,
+  //   img: {
+  //     //data: fs.readFileSync(path.join(__dirname + '/uploads' + req.file.filename)),
+  //    data: req.body.img,
+  //     contentType: 'image/png'
+  //   }
+  // }
+  // db.create(obj, (err,item) => {
+  //   if(err) {
+  //     console.log(err);
+  //   }
+  //   else {
+  //     res.redirect('/admin');
+  //   }
+  // })
+}
 
-  
+exports.getData = async (req, res) => {
+  const data = await Question.find();
+  const {length} = data;
+  const ids = [];
+  for(let i =0; i< length; i++){
+    ids.push(i)
+  }
+  const idsTrimmed = ids.sort(() => Math.random() - 0.5).slice(0,2)
+  const ans = []
+  idsTrimmed.forEach(id => {
+    ans.push(data[id])
+  })
+  res.send(ans)
+
+}
+
+

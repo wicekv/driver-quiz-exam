@@ -23,13 +23,11 @@ const login = (username, password) => {
       return response.data;
     });
 };
-const submit = (question, answear1, answear2, img) => {
+const submit = (question) => {
   return axios.post(API_URL + "admin", {
-    question,
-    answear1,
-    answear2,
-    img,
-  })
+    question
+  }
+  )
   .then((response) => {
     console.log(response);
   });
@@ -43,9 +41,8 @@ const getCurrentUser = () => {
 };
 
 const getData = () => {
-  console.log('here');
-  axios.get(API_URL + "admin", {})
-  .then(res => console.log(res))
+  return axios.get(API_URL + "admin", {})
+  .then(res => res.data)
   .catch(err => console.log(err))
 }
 

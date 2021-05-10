@@ -40,8 +40,9 @@ label {
   font: normal normal 400 16px Source Sans Pro;
 }
 .background_image{
-  width: 100%;
-  height: 100%;
+  width: 100vh;
+  height: 100vw;
+  overflow: hidden;
   top: 0;
   left: 0;
   position: absolute;
