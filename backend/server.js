@@ -1,7 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const multer = require('multer');
 const dbConfig = require("./config/db.config");
+const apiRouter = require('./routes')
+
+// routes
+app.use('/api', apiRouter);
+
 
 const app = express();
 
@@ -39,7 +45,6 @@ db.mongoose
  })
 
 
-
 // simple route
 /*app.get("/admin/questions", (req, res) => {
   
@@ -59,17 +64,15 @@ db.mongoose
   })
   }
 );*/
-var multer = require('multer');
+
+const User = require("./models/user.model");
+const { user } = require("./models");
 var storage = multer.diskStorage({destination: (req, file, cb)=>{
   cb(null,file.fieldname + '-' + Date.now())
 }
 });
 const upload = multer ({storage: storage});
 
-
-// routes
-require("./routes/auth.routes")(app);
-require("./routes/user.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -103,3 +106,5 @@ function initial() {
     }
   });
 }
+
+module.exports = app

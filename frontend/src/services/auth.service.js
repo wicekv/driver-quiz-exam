@@ -1,56 +1,36 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/auth/";
+import {API_URL} from '../';
+
+const AUTH_PATH = `${API_URL}/auth`
 
 const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
+  return axios.post(`${AUTH_PATH}/signup` , {
     username,
     email,
-    password,
+    password
   });
 };
 
-const login = (username, password) => {
-  return axios
-    .post(API_URL + "signin", {
+const login = async (username, password) => {
+  const response = await axios
+    .post(`${AUTH_PATH}/signin`, {
       username,
       password,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
     });
-};
-const submit = (question) => {
-  return axios.post(API_URL + "admin", {
-    question
+  if (response.data.accessToken) {
+    localStorage.setItem("user", JSON.stringify(response.data));
   }
-  )
-  .then((response) => {
-    console.log(response);
-  });
+  return response.data;
 };
+
+
 const logout = () => {
   localStorage.removeItem("user");
 };
 
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-
-const getData = () => {
-  return axios.get(API_URL + "admin", {})
-  .then(res => res.data)
-  .catch(err => console.log(err))
-}
 
 export default {
   register,
   login,
   logout,
-  getCurrentUser,
-  submit,
-  getData
 };

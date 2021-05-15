@@ -56,6 +56,8 @@ const Register = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [allScore, setAllScore] = useState("0");
+  const [allQuiz, setAllQuiz] = useState("0");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -74,6 +76,16 @@ const Register = (props) => {
     setPassword(password);
   };
 
+  const onChangeAllScore = (e) => {
+    const allScore = e.target.value;
+    setAllScore(allScore);
+  }
+
+  const onChangeAllQuiz = (e) => {
+    const allQuiz = e.target.value;
+    setAllQuiz(allQuiz);
+  }
+
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -83,7 +95,7 @@ const Register = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(username, email, password).then(
+      AuthService.register(username, email, password, allScore, allQuiz).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);

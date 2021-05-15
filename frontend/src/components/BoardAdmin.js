@@ -140,7 +140,7 @@ const BoardAdmin = () => {
         <button>
           Dodaj
         </button>
-        <div>Data:
+        {/* <div>Data:
         {data && data.map(question => {
           let data = '';
           if (question.img.data) {
@@ -153,7 +153,7 @@ const BoardAdmin = () => {
           </div>)
 
         })}
-        </div>
+        </div> */}
       </Form>
 
     </div>

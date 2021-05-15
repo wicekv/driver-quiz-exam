@@ -12,7 +12,7 @@ exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
   });
 
   user.save((err, user) => {
@@ -76,7 +76,7 @@ exports.signin = (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: "Użytkownik nie znaleziony" });
+        return res.status(403).send({ message: "Użytkownik nie znaleziony" });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -129,6 +129,9 @@ exports.submit = (req, res) => {
     res.redirect('/admin');
   });
 
+  exports.findAll = (req, res) => {
+    User.find({})
+  }
 
   // var obj = {
   //   question: req.body.question,
