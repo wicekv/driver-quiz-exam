@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "driver-secret-key"
-  };
+  secret: "driver-secret-key"
+};

@@ -1,10 +1,21 @@
-import React from "react";
-import AuthService from "../services/auth.service";
+import React, {useState, useEffect} from "react";
+import { getCurrentUser } from "../services/user.service";
+
 
 import '../styles/register.css';
 
 const Profile = () => {
-  const currentUser = AuthService.getCurrentUser();
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(async() => {
+    const user = await getCurrentUser();
+
+    setCurrentUser(user)
+  }, [])
+
+  if(!currentUser){
+    return <></>
+  }
 
   return (
 
@@ -28,7 +39,7 @@ const Profile = () => {
       <strong>Przydzielone Role:</strong>
       <ul>
         {currentUser.roles &&
-          currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+          currentUser.roles.map((role, index) => <li key={index}>{role.name}</li>)}
       </ul>
     </div>
   );

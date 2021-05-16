@@ -1,25 +1,24 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+import {authHeader} from "./auth-header";
+import {API_URL} from './index'
 
+const USER_URL = `${API_URL}/user`
 
-
-const getPublicContent = () => {
-  return axios.get(API_URL + "all");
-};
-
-const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-
-const getQuestions = () => {
-  return axios.get(API_URL + "admin", { headers: authHeader() })
-  .then(res => res.data)
-  .catch(err => console.log(err))
+export const getQuestions = async () => {
+  try {
+    const res = await axios.get(`${USER_URL}/questions`, { headers: authHeader() });
+    return res.data;
+  } catch (err) {
+    return console.log(err);
+  }
 }
 
-export default {
-  getPublicContent,
-  getUserBoard,
-  getQuestions,
-};
+
+export const getCurrentUser = async () => {
+  try {
+    const res = await axios.get(`${USER_URL}/user`, { headers: authHeader() });
+    return res.data;
+  } catch (err) {
+    return console.log(err);
+  }
+}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL} from '../';
+import {API_URL} from './index';
 
 const AUTH_PATH = `${API_URL}/auth`
 

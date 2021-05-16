@@ -15,15 +15,8 @@ userRouter.use((req, res, next) => {
 });
 
 // routes
+userRouter.get("/questions", [authJwt.verifyToken],  controller.getQuestions);
+userRouter.get("/user", [authJwt.verifyToken],  controller.getUser)
 
-userRouter.get("/all", controller.allAccess);
-userRouter.get("/stats", controller.statsBoard);
-userRouter.get("", [authJwt.verifyToken], controller.userBoard);
-
-// userRouter.get(
-//   "/api/test/admin",
-//   [authJwt.verifyToken, authJwt.isAdmin],
-//   controller.adminBoard
-// );
 
 module.exports = userRouter;

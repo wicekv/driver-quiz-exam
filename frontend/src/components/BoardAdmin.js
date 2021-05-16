@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import UserService from "../services/user.service";
+import UserService from "../services/admin.service";
 import { Form, Button } from "react-bootstrap";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service"

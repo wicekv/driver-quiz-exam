@@ -12,21 +12,24 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardAdmin from "./components/BoardAdmin";
 import BoardStats from "./components/BoardStats";
+import { getCurrentUser } from "./services/user.service";
 
-import background from "../src/images/background.webp";
+// import background from './images/background.webp';
 
 const App = () => {
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
 
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
+  useEffect(async () => {
+    const user = await getCurrentUser();
+    setCurrentUser(user)
+  },[])
 
-    if (user) {
-      setCurrentUser(user);
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+  const isAdmin = () => {
+    if (!currentUser) {
+      return false
     }
-  }, []);
+    return currentUser.roles.find(({ name }) => name === 'admin') ? true : false
+  }
 
   const logOut = () => {
     AuthService.logout();
@@ -50,7 +53,7 @@ const App = () => {
             </li>
 
 
-            {showAdminBoard && (
+            {isAdmin() && (
               <li className="nav-item">
                 <Link to={"/admin"} className="nav-link">
                   Dodaj pytanie
