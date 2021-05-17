@@ -22,3 +22,22 @@ export const getCurrentUser = async () => {
     return console.log(err);
   }
 }
+
+export const getUsers = async () => {
+  try {
+    const res = await axios.get(`${USER_URL}/users`, { headers: authHeader() });
+    return res.data;
+  } catch (err) {
+    return console.log(err);
+  }
+}
+
+
+export const postScore = async (score) => {
+  try {
+    const res = await axios.post(`${USER_URL}/score`, {score}, { headers: authHeader() });
+    return res.data;
+  } catch (err) {
+    return console.log(err);
+  }
+}

@@ -22,8 +22,31 @@ module.exports = {
       const user =  await User.findById(req.userId).populate('roles').exec();
       res.send(user)
     } catch (error) {
-      res.statusCode(500);
+      res.status(500);
       res.send()
+    }
+  },
+  getUsers: async (req, res) => {
+    try {
+      const users =  await User.find().exec();
+      const data = users.map(({username, allScore}) => ({username, allScore}))
+      res.send(data)
+    } catch (error) {
+      res.status(500);
+      res.send()
+    }
+  },
+  
+  postUserScore: async (req, res) => {
+    try {
+      const {score} = req.body
+      const user =  await User.findById(req.userId).populate('roles').exec();
+      user.allScore = (user.allScore || 0) + score;
+      await user.save()
+      res.send(user)
+    } catch (error) {
+      res.status(500);
+      res.send(error)
     }
   },
   postAnswer: async (req, res) => {

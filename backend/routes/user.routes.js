@@ -17,6 +17,7 @@ userRouter.use((req, res, next) => {
 // routes
 userRouter.get("/questions", [authJwt.verifyToken],  controller.getQuestions);
 userRouter.get("/user", [authJwt.verifyToken],  controller.getUser)
-
+userRouter.get("/users", [authJwt.verifyToken],  controller.getUsers)
+userRouter.post("/score", [authJwt.verifyToken],  controller.postUserScore)
 
 module.exports = userRouter;

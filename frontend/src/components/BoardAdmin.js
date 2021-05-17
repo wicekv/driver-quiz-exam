@@ -3,6 +3,7 @@ import UserService from "../services/admin.service";
 import { Form, Button } from "react-bootstrap";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service"
+import {addQuestion} from './../services/admin.service'
 
 import '../styles/addQuestion.css';
 
@@ -18,8 +19,7 @@ const BoardAdmin = () => {
     ],
     photo: null
   })
-  const [data, setData] = useState()
-
+ 
 
 
   const onChangeQuestion = (e) => {
@@ -75,22 +75,11 @@ const BoardAdmin = () => {
       })
     })
 
-
-
-
   };
-
-  useEffect(() => {
-    AuthService.getData().then(data => {
-      setData(data)
-      console.log(data)
-    })
-
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    AuthService.submit(formState)
+    addQuestion(formState)
   }
 
   return (
@@ -140,20 +129,7 @@ const BoardAdmin = () => {
         <button>
           Dodaj
         </button>
-        {/* <div>Data:
-        {data && data.map(question => {
-          let data = '';
-          if (question.img.data) {
-            data = Buffer.from(question.img.data.data).toString()
-          }
 
-          return  (<div>
-            <p>{question.question}</p>
-            <img src={data} />
-          </div>)
-
-        })}
-        </div> */}
       </Form>
 
     </div>

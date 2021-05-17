@@ -1,8 +1,10 @@
+const Question = require('./../models/questions');
+
 module.exports = {
     addQuestion: (req, res) => {
-        const { question: {
+        const {
             photo, ...rest
-        }} = req.body;
+        } = req.body;
         const question = new Question({
             ...rest,
             img: {
@@ -15,7 +17,7 @@ module.exports = {
                 res.status(500).send({ message: err });
                 return;
             }
-            res.redirect('/admin');
+            res.send();
         });
     }
 }
